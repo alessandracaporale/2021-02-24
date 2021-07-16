@@ -1,13 +1,17 @@
 package it.polito.tdp.PremierLeague.model;
 
+import java.util.*;
+
 public class Player {
 	Integer playerID;
 	String name;
+	Map<Integer, Double> mapEfficienzePerPartita= new HashMap<>();
 	
 	public Player(Integer playerID, String name) {
 		super();
 		this.playerID = playerID;
 		this.name = name;
+		//mapEfficienzePerPartita = new HashMap<>();
 	}
 	
 	public Integer getPlayerID() {
@@ -52,6 +56,16 @@ public class Player {
 	public String toString() {
 		return playerID + " - " + name;
 	}
+
+	public double getEfficienza(Match m) {
+		return this.mapEfficienzePerPartita.get(m.matchID);
+	}
+
+	public void aggiungiEfficienza(Match m, double e) {
+		this.mapEfficienzePerPartita.put(m.matchID, e);
+	}
+
+	
 	
 	
 	
