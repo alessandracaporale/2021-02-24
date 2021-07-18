@@ -5,7 +5,7 @@ import java.util.*;
 public class Player {
 	Integer playerID;
 	String name;
-	Map<Integer, Double> mapEfficienzePerPartita= new HashMap<>();
+	//Map<Integer, Double> mapEfficienzePerPartita= new HashMap<>();
 	
 	public Player(Integer playerID, String name) {
 		super();
@@ -57,15 +57,6 @@ public class Player {
 		return playerID + " - " + name;
 	}
 
-	public double getEfficienza(Match m) {
-		return this.mapEfficienzePerPartita.get(m.matchID);
-	}
-
-	public void aggiungiEfficienza(Match m, double e) {
-		this.mapEfficienzePerPartita.put(m.matchID, e);
-	}
-
-	
 	
 	
 	

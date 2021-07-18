@@ -50,7 +50,7 @@ public class FXMLController {
     @FXML
     void doCreaGrafo(ActionEvent event) {
     	Match match = this.cmbMatch.getValue();
-    	txtResult.appendText(this.model.creaGrafo(match)+"\n\n");
+    	txtResult.setText(this.model.creaGrafo(match)+"\n\n");
     }
 
     @FXML
@@ -61,6 +61,12 @@ public class FXMLController {
     
     @FXML
     void doSimula(ActionEvent event) {
+    	int n;
+    	try {
+    		n = Integer.parseInt(txtN.getText());
+    	} catch (NumberFormatException e) {
+    		this.txtResult.setText("Errore! Il valore di N non è corretto");
+    	}
 
     }
 

@@ -183,27 +183,52 @@ public class PremierLeagueDAO {
 		}
 	}
 	
-	public void setEfficienze (Player p, Match match) {
-		String sql = "SELECT PlayerID, totalSuccessfulPassesAll as sp, assists as a, timePlayed as tp "
-				+ "FROM actions "
-				+ "WHERE MatchID = ?";
-		
-		try {
-			Connection conn = DBConnect.getConnection();
-			PreparedStatement st = conn.prepareStatement(sql);
-			st.setInt(1, match.getMatchID());
-			ResultSet rs = st.executeQuery();
+	public List<Team> getTeamByMatch (Match match) {
+		String sql = "SELECT DISTINCT t.TeamID, t.Name "
+				+ "FROM actions a, teams t "
+				+ "WHERE a.MatchID = 32 AND a.TeamID = t.TeamID";
+		List<Team> result = new ArrayList<Team>();
+		Connection conn = DBConnect.getConnection();
 
-			while (rs.next()) {
-				double e = (double) (rs.getInt("sp")+rs.getInt("a"))/rs.getInt("tp");
-					if(p.getPlayerID() == rs.getInt("PlayerID")) {
-						p.aggiungiEfficienza(match, e);
-					}
+		try {
+			PreparedStatement st = conn.prepareStatement(sql);
+			ResultSet res = st.executeQuery();
+			while (res.next()) {
+				Team team = new Team(res.getInt("TeamID"), res.getString("Name"));
+				result.add(team);
 			}
 			conn.close();
-		}
-		catch (SQLException e) {
+			return result;
+			
+		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Team getTeamByPlayer (Player p) {
+		String sql = "SELECT distinct t.TeamID as id, t.Name as name"
+				+ "FROM actions a, teams t "
+				+ "WHERE PlayerID = ? AND a.TeamID = t.TeamID";
+		///Team team = null;
+		Connection conn = DBConnect.getConnection();
+
+		try {
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, p.getPlayerID());
+			ResultSet res = st.executeQuery();
+			if (res.next()) {
+				conn.close();
+				Team team = new Team(res.getInt("TeamID"), res.getString("Name"));
+				return team;
+			}
+			else {
+				return null;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 	
